@@ -1,9 +1,44 @@
-{% if tasks %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static '/node_modules/bootstrap/dist/css/bootstrap.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'static\node_modules\bootstrap\dist\css\bootstrap.min.css' %}"> -->
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Urban Piper</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <button id="create_task" class="btn btn-sm btn-primary float-right">Create Task</button>
+            </li>
+            </ul>
+            <span>Logged in as: {{ username }}</span>
+        </div>
+    </nav>
+    <span class="">{{ username }}</span>
+    {% if tasks %}
     <ul>
-    {% for task in tasks %}
+        {% for task in tasks %}
         <li><a href="/{{ task.id }}/">{{ task.title }} {{ task.created_date }}</a></li>
-    {% endfor %}
+        {% endfor %}
     </ul>
-{% else %}
+    {% else %}
     <p>No polls are available.</p>
-{% endif %}
+    {% endif %}
+</body>
+<script href="{% static '/node_modules/jquery/dist/jquery.min.js' %}" />
+<script href="{% static '/node_modules/bootstrap/dist/js/bootstrap.min.js' %}" />
+<script href="{% static '/js/script.js' %}" />
+</html>
