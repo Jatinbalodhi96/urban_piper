@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 
-
 from .models import Task
 
 
@@ -25,4 +24,11 @@ def index(request):
 
 
 def createTask(request):
-    return HttpResponse(200)
+    if request.method == 'POST':
+        created_by = request.user.username
+        title = request.POST['title']
+        priority = request.POST['priority']
+        status = 'new'
+        task = Task(title=title, priority=priority, created_by=created_by, status=status)
+        task.save()
+    return redirect('/')

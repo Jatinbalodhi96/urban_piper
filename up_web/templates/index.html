@@ -14,31 +14,104 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Urban Piper</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <button id="create_task" class="btn btn-sm btn-primary float-right">Create Task</button>
-            </li>
+                <li class="nav-item active">
+                    <button class="btn btn-sm btn-primary float-right" data-toggle="modal"
+                        data-target="#create_task_modal">Create Task</button>
+                </li>
             </ul>
             <span>Logged in as: {{ username }}</span>
         </div>
     </nav>
-    <span class="">{{ username }}</span>
-    {% if tasks %}
-    <ul>
-        {% for task in tasks %}
-        <li><a href="/{{ task.id }}/">{{ task.title }} {{ task.created_date }}</a></li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>No polls are available.</p>
-    {% endif %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <span class="h4">Tasks list</span>
+            </div>
+            <div class="col-sm-12">
+                {% if tasks %}
+                <table class="table text-center">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Created by</th>
+                            <th scope="col">Created on</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Priority</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for task in tasks %}
+                        <tr>
+                            <th scope="row">{{ task.id }}</th>
+                            <td>{{ task.title }}</td>
+                            <td>{{ task.created_by }}</td>
+                            <td>{{ task.creation_date }}</td>
+                            <td>{{ task.status }}</td>
+                            <td>{{ task.priority }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <span class="sm-4">No tasks are available</span>
+                {% endif %}
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="create_task_modal" tabindex="-1" role="dialog"
+                aria-labelledby="create_task_modal" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Create Task</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Task adding form -->
+                            <form method="POST" action="create_task">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="title">Title</label>
+                                    <input type="text" class="form-control" id="title" placeholder="Add Title" name="title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="created_by">Priority</label>
+                                    <input type="text" class="form-control" id="created_by" placeholder="Created By" name="priority">
+                                </div>
+                                <div class="form-group">
+                                    <label for="created_by">Created By</label>
+                                    <input type="text" class="form-control" id="created_by" placeholder="Created By" value="{{ username }}" name="username" disabled>
+                                </div>
+                                <button id="create_task" type="submit" class="btn btn-primary">Create</button>
+                            </form>
+                        </div>
+                        <!-- <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Create</button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-<script href="{% static '/node_modules/jquery/dist/jquery.min.js' %}" />
-<script href="{% static '/node_modules/bootstrap/dist/js/bootstrap.min.js' %}" />
-<script href="{% static '/js/script.js' %}" />
+<script src="{% static '/node_modules/jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static '/node_modules/popper.js/dist/popper.min.js' %}"></script>
+<script src="{% static '/node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static '/js/script.js' %}"></script>
+<script>
+    $('#create_task_modal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+    })    
+</script>
+
 </html>
