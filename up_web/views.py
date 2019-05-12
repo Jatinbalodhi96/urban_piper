@@ -31,4 +31,6 @@ def createTask(request):
         status = 'new'
         task = Task(title=title, priority=priority, created_by=created_by, status=status)
         task.save()
+
+        # TODO: on task creation update queue
     return redirect('/')

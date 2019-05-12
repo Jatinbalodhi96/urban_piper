@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
+    # 'djcelery',
     # 'notifications'
 ]
 
@@ -69,8 +71,23 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'urban_piper.wsgi.application'
+ASGI_APPLICATION = "urban_piper.routing.application"
+# WSGI_APPLICATION = 'urban_piper.wsgi.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_rabbitmq.core.RabbitmqChannelLayer",
+        "CONFIG": {
+            "host": "amqp://qtknohgh:yPqam1az0l5hKN0Kz73jc5VLpxST9Rej@shark.rmq.cloudamqp.com/qtknohgh",
+            # "ssl_context": ... (optional)
+        },
+    },
+}
 
+CELERY_BROKER_URL = 'amqp://qtknohgh:yPqam1az0l5hKN0Kz73jc5VLpxST9Rej@shark.rmq.cloudamqp.com/qtknohgh'
+# CELERY_RESULT_BACKEND = os.path.join(BASE_DIR, 'db.sqlite3')
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
